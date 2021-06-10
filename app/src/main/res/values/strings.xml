@@ -1,3 +1,12 @@
 <resources>
     <string name="app_name">KW 3SC Pokemon</string>
+    <string name="general_err_msg">An error has occurred, please try again later.</string>
+    <string name="pokemon_num">Pokemon Number</string>
+    <string name="species">Species</string>
+    <string name="types">Types</string>
+    <string name="weight">Weight</string>
+    <string name="forms">Forms</string>
+    <string name="def_shiny">Default/Shiny</string>
+    <string name="female_shiny">Female/Shiny Female</string>
+    <string name="sprite">sprite</string>
 </resources>

@@ -7,31 +7,27 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import kw.cube.pokemon.model.PokemonPreview
+import kw.cube.pokemon.model.PokemonProfile
 import kw.cube.pokemon.repo.PokemonRepo
 import kw.cube.pokemon.util.TAG
 import java.lang.Exception
 
-class ListViewModel : ViewModel() {
+class ProfileViewModel : ViewModel() {
 
     private val repo = PokemonRepo()
 
-    val pokemons: MutableState<List<PokemonPreview>> = mutableStateOf(ArrayList())
+    val profile: MutableState<PokemonProfile?> = mutableStateOf(null)
     val error: MutableState<Boolean> = mutableStateOf(false)
 
-    init {
-        if (pokemons.value.size == 0) {
-            searchPokemon()
-        }
-    }
 
-    fun searchPokemon() {
+    fun getProfile(id: String) {
         viewModelScope.launch {
             try{
                 error.value = false
-                val results = repo.search(0, 1118)
-                pokemons.value = results
-                Log.d(TAG, "searchPokemon: res: " + results)
-            }catch (e: Exception){
+                val result = repo.getProfile(id)
+                profile.value = result
+                Log.d(TAG, "getProfile: res: " + result)
+            }catch (e : Exception){
                 error.value = true
             }
         }

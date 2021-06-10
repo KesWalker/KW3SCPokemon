@@ -1,4 +1,4 @@
-package kw.cube.pokemon.network.response
+package kw.cube.pokemon.model
 
 import kw.cube.pokemon.model.PokemonPreview
 

@@ -20,6 +20,9 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.glide.rememberGlidePainter
 import kw.cube.pokemon.R
+import kw.cube.pokemon.model.PokemonPreview
+import kw.cube.pokemon.ui.components.ErrorMessage
+import kw.cube.pokemon.ui.components.LoadingSpinner
 import kw.cube.pokemon.ui.theme.KW3SCPokemonTheme
 import kw.cube.pokemon.util.imgHost
 
@@ -29,29 +32,44 @@ import kw.cube.pokemon.util.imgHost
 fun ListComposable(navController: NavController) {
     val viewModel: ListViewModel = viewModel()
     val pokemons = viewModel.pokemons.value
-    if (pokemons.size == 0) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-            CircularProgressIndicator()
-        }
+    val error = viewModel.error.value
+    if (pokemons.size == 0 && !error) {
+        LoadingSpinner()
+    } else if (error) {
+        ErrorMessage()
     } else {
         LazyVerticalGrid(cells = GridCells.Adaptive(minSize = 128.dp)) {
             itemsIndexed(pokemons) { index, item ->
-                Card(
-                    shape = MaterialTheme.shapes.small,
-                    modifier = Modifier.padding(8.dp).fillMaxWidth(),
-                    elevation = 4.dp,
-                    onClick = { navController.navigate("profile/" + item.getId()) }
-                ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        Image(
-                            painter = rememberGlidePainter(item.getImgUrl(),fadeIn = true,previewPlaceholder = R.drawable.unknown),
-                            contentDescription = item.name,
-                            Modifier.height(96.dp).width(96.dp)
-                        )
-                        Text(item.name)
-                    }
-                }
+                PokemonNameImage(navController, item)
             }
+        }
+    }
+}
+
+@ExperimentalMaterialApi
+@Composable
+fun PokemonNameImage(navController: NavController, pokemon: PokemonPreview) {
+    Card(
+        shape = MaterialTheme.shapes.small,
+        modifier = Modifier
+            .padding(8.dp)
+            .fillMaxWidth(),
+        elevation = 4.dp,
+        onClick = { navController.navigate("profile/" + pokemon.getId()) }
+    ) {
+        Column(horizontalAlignment = Alignment.CenterHorizontally) {
+            Image(
+                painter = rememberGlidePainter(
+                    pokemon.getImgUrl(),
+                    fadeIn = true,
+                    previewPlaceholder = R.drawable.unknown
+                ),
+                contentDescription = pokemon.name,
+                Modifier
+                    .height(96.dp)
+                    .width(96.dp)
+            )
+            Text(pokemon.name, Modifier.padding(4.dp))
         }
     }
 }
