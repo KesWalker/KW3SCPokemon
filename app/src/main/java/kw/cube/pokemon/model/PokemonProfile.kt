@@ -2,6 +2,12 @@ package kw.cube.pokemon.model
 
 import kw.cube.pokemon.util.imgHost
 
+/**
+ * Contains all the attributes of an individual pokemon. Although slightly less than the total
+ * available attributes, I removed a number of ones I thought were unnecessary.
+ * I used this plugin to help convert JSON strings into Kotlin classes:
+ * https://plugins.jetbrains.com/plugin/9960-json-to-kotlin-class-jsontokotlinclass-
+ */
 data class PokemonProfile(
     val abilities: List<Ability>,
     val base_experience: Int,

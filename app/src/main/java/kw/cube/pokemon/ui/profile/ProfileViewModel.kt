@@ -19,7 +19,11 @@ class ProfileViewModel : ViewModel() {
     val profile: MutableState<PokemonProfile?> = mutableStateOf(null)
     val error: MutableState<Boolean> = mutableStateOf(false)
 
-
+    /**
+     * Uses the ID of the pokemon to retrieve more details. If user's device is offline, an exception
+     * will be thrown and caught, the 'error' state variable will be changed and the UI will
+     * reflect this by showing an error message.
+     */
     fun getProfile(id: String) {
         viewModelScope.launch {
             try{

@@ -26,13 +26,21 @@ import kw.cube.pokemon.ui.components.LoadingSpinner
 import kw.cube.pokemon.ui.theme.KW3SCPokemonTheme
 import kw.cube.pokemon.util.imgHost
 
+/**
+ * Interacts with ListViewModel to display a list of pokemons. Uses NavController to navigate
+ * to speciifc pokemon profiles. Monitors state of pokemon list & error boolean within viewModel.
+ * Will re-create it's self if any state changes -> https://developer.android.com/jetpack/compose/state
+ *
+ * viewModel is in the constructor but it should only be created once and should remain
+ * available as long as the base activity is alive. See https://developer.android.com/jetpack/compose/libraries#viewmodel
+ */
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
-fun ListComposable(navController: NavController) {
-    val viewModel: ListViewModel = viewModel()
+fun ListComposable(navController: NavController, viewModel: ListViewModel = viewModel()) {
     val pokemons = viewModel.pokemons.value
     val error = viewModel.error.value
+
     if (pokemons.size == 0 && !error) {
         LoadingSpinner()
     } else if (error) {
@@ -46,6 +54,11 @@ fun ListComposable(navController: NavController) {
     }
 }
 
+/**
+ * Displays a single image using the image url in the pokemonPreview object & a single peice
+ * of text with the pokemons name. Uses a material theme Card widget. Image is loaded from
+ * the internet with Glide, see more here -> https://google.github.io/accompanist/glide/
+ */
 @ExperimentalMaterialApi
 @Composable
 fun PokemonNameImage(navController: NavController, pokemon: PokemonPreview) {

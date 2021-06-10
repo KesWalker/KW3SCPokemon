@@ -16,6 +16,9 @@ import kw.cube.pokemon.ui.list.ListComposable
 import kw.cube.pokemon.ui.profile.ProfileComposable
 import kw.cube.pokemon.ui.theme.KW3SCPokemonTheme
 
+/**
+ * Base activity for our composables.
+ */
 class MainActivity : ComponentActivity() {
     @ExperimentalMaterialApi
     @ExperimentalFoundationApi
@@ -32,6 +35,10 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+/**
+ * Base composable & navigation center. Content will change depending on the navHost's
+ * destination.
+ */
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Composable
@@ -41,10 +48,14 @@ fun Home() {
         composable("list"){ ListComposable(navController = navHost)}
         composable("profile/{id}"){ backStackEntry ->
             ProfileComposable(backStackEntry.arguments?.getString("id"))
+            // using ID instead of url because it's difficult to pass the url as a navigation param
         }
     }
 }
 
+/**
+ * Previews the Home() component.
+ */
 @ExperimentalMaterialApi
 @ExperimentalFoundationApi
 @Preview(showBackground = true)

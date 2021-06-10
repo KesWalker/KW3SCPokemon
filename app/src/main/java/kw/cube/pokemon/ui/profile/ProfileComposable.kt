@@ -25,10 +25,17 @@ import kw.cube.pokemon.ui.components.LoadingSpinner
 import kw.cube.pokemon.ui.components.TextStat
 import kw.cube.pokemon.ui.list.ProfileViewModel
 
+/**
+ * Base profile composable, parent of all profile composables. Monitors state changes in the
+ * ProfileViewModel, re creates view when states change. Displays individual pokemon profile
+ * from https://pokeapi.co/api/v2/pokemon/{id}
+ *
+ * viewModel is in the constructor but it should only be created once and should remain
+ * available as long as the base activity is alive. See https://developer.android.com/jetpack/compose/libraries#viewmodel
+ */
 @ExperimentalFoundationApi
 @Composable
-fun ProfileComposable(id: String?) {
-    val viewModel: ProfileViewModel = viewModel()
+fun ProfileComposable(id: String?, viewModel: ProfileViewModel = viewModel()) {
     if (id != null) {
         viewModel.getProfile(id)
         val profile = viewModel.profile.value
@@ -45,6 +52,9 @@ fun ProfileComposable(id: String?) {
     }
 }
 
+/**
+ * Main column for all our pokemon details.
+ */
 @ExperimentalFoundationApi
 @Composable
 fun ProfileMain(profile: PokemonProfile) {
@@ -117,6 +127,11 @@ fun StatBox(stat: Stat) {
     }
 }
 
+/**
+ * Make shift grid for our pokemon stats. Did try to use LazyVerticalGrid but it did not work.
+ * See here for my question regarding the issue:
+ * https://stackoverflow.com/questions/67919707/jetpack-compose-how-to-put-a-lazyverticalgrid-inside-a-scrollable-column
+ */
 @ExperimentalFoundationApi
 @Composable
 fun Stats(stats: List<Stat>) {
@@ -134,6 +149,10 @@ fun Stats(stats: List<Stat>) {
     }
 }
 
+/**
+ * Displays the images for our pokemon, if there is a female version it will display them images too.
+ * Not all pokemon objects have female version so an If statement is required.
+ */
 @ExperimentalFoundationApi
 @Composable
 fun Sprites(sprites: Sprites) {
@@ -157,6 +176,10 @@ fun Sprites(sprites: Sprites) {
     }
 }
 
+/**
+ * Uses Glide to load image. Loading progress is monitored and a progress indicator is displayed
+ * when it is loading.
+ */
 @Composable
 fun RowScope.SpriteBox(url: String) {
     val painter = rememberGlidePainter(url, fadeIn = true, previewPlaceholder = R.drawable.unknown)

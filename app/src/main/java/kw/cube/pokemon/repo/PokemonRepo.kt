@@ -11,6 +11,11 @@ class PokemonRepo {
 
     private val pokemonService: PokemonService
 
+    /**
+     * Creates the http client service when initalised. The repo is shared between viewmodels to
+     * prevent duplicate code. An more optimal solution might be to dependency inject the service
+     * and have it be a singleton to ensure it is only ever created once. https://square.github.io/retrofit/
+     */
     init {
         pokemonService = Retrofit.Builder()
             .baseUrl("https://pokeapi.co/api/v2/")
